@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍕 Пицца-Слоты v3.1 - Пиццерия Данияр Пепперони</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="app">
+
+        <header class="topbar">
+            <dl class="topbar-item">
+                <dt class="tb-label">Баланс</dt>
+                <dd class="tb-value" id="coinsTop">50</dd>
+            </dl>
+            <dl class="topbar-item">
+        <dt class="tb-label">Пицц</dt>
+        <dd class="tb-value" id="pizzasTop">0</dd>
+      </dl>
+      <dl class="topbar-item">
+        <dt class="tb-label">Джекпоты</dt>
+        <dd class="tb-value" id="jackpotsTop">0</dd>
+      </dl>
+        </header>
+         <!-- ==================== ВКЛАДКИ ==================== -->
+    <nav class="tabs" aria-label="Разделы игры">
+      <menu>
+        <li><button class="tab active" data-tab="slots" aria-current="page">🎰 Слоты</button></li>
+        <li><button class="tab" data-tab="craft">👨‍🍳 Крафт</button></li>
+        <li><button class="tab" data-tab="shop">🛒 Магазин</button></li>
+        <li><button class="tab" data-tab="inventory">🎒 Инвентарь</button></li>
+        <li><button class="tab" data-tab="records">🏆 Рекорды</button></li>
+      </menu>
+    </nav>
+
+    <!-- ==================== СЛОТЫ ==================== -->
+    <section class="panel active" id="panel-slots" aria-labelledby="slots-title">
+      <article class="machine">
+        <header class="header">
+          <h1 id="slots-title">🍕 ПИЦЦА-СЛОТЫ 🍕</h1>
+          <p>Крути — выбивай топпинги для пицц!</p>
+        </header>
+
+        <figure class="case-wrapper">
+          <span class="case-pointer" aria-hidden="true"></span>
+          <figcaption class="case-window">
+            <output class="case-track" id="caseTrack"></output>
+          </figcaption>
+        </figure>
+
+        <form class="controls" onsubmit="return false">
+          <button id="spinBtn" type="button">🎰 КРУТИТЬ (10 🍕)</button>
+          <button id="freeSpinBtn" class="free-btn" type="button" aria-label="Бесплатный спин">🎁</button>
+          <button id="soundBtn" type="button" title="Звук" aria-pressed="true">🔊</button>
+        </form>
+
+        <output class="free-timer" id="freeTimer" aria-live="polite">🎁 Бесплатные спины через 30:00</output>
+
+        <output class="message" id="message" aria-live="polite">Нажми «КРУТИТЬ» и поймай топпинги!</output>
+
+        <ul class="prizes" id="prizesList"></ul>
+      </article>
+    </section>
+
+    <!-- ==================== КРАФТ ==================== -->
+    <section class="panel" id="panel-craft" aria-labelledby="craft-title" hidden>
+      <article class="card">
+        <h2 id="craft-title">👨‍🍳 Собери пиццу</h2>
+        <p class="hint">База (🫓 тесто + 🥫 соус + 🥓 колбаса) у тебя есть всегда. Собирай топпинги!</p>
+
+        <ol class="craft-steps">
+          <li class="craft-step">
+            <h3>1. База (всегда есть)</h3>
+            <ul class="recipe" id="recipeBase"></ul>
+          </li>
+          <li class="craft-step">
+            <h3>2. Топпинги (по желанию — чем больше, тем дороже)</h3>
+            <ul class="recipe" id="recipeToppings"></ul>
+          </li>
+        </ol>
+
+        <dl class="craft-price">
+          <dt>Цена пиццы:</dt>
+          <dd><data id="craftPrice" value="5">5</data> 🍕</dd>
+          <dt class="hint" id="craftBreakdown">базовая пицца — 5 🍕</dt>
+        </dl>
+
+        <output class="craft-result" id="craftResult" aria-live="polite"></output>
+        <button id="craftBtn" class="big-btn" type="button">🔥 ИСПЕЧЬ ПИЦЦУ</button>
+
+        <section class="pizza-gallery" aria-labelledby="gallery-title">
+          <h3 id="gallery-title">Твои пиццы (<output id="pizzasMadeCount">0</output>)</h3>
+          <ul class="gallery" id="pizzaGallery">
+            <li class="empty">Пока пусто... собери первую пиццу!</li>
+          </ul>
+        </section>
+      </article>
+    </section>
+
+    <!-- ==================== МАГАЗИН ==================== -->
+    <section class="panel" id="panel-shop" aria-labelledby="shop-title" hidden>
+      <article class="card">
+        <h2 id="shop-title">🛒 Магазин топпингов</h2>
+        <p class="hint">Покупай топпинги за монеты.</p>
+
+        <ul class="shop-grid" id="shopGrid"></ul>
+
+        <aside class="exchange">
+          <h3>♻️ Обмен пицц на топпинги</h3>
+          <p class="hint">Каждая пицца = <strong>1 случайный топпинг</strong></p>
+          <button id="exchangeBtn" class="big-btn" type="button">♻️ ОБМЕНЯТЬ ВСЕ ПИЦЦЫ</button>
+        </aside>
+      </article>
+    </section>
+
+    <!-- ==================== ИНВЕНТАРЬ ==================== -->
+    <section class="panel" id="panel-inventory" aria-labelledby="inv-title" hidden>
+      <article class="card">
+        <h2 id="inv-title">🎒 Инвентарь</h2>
+        <p class="hint">Топпинги, которые у тебя есть. Продажа за цену −2 🍕.</p>
+
+        <ul class="inv-grid" id="invGrid"></ul>
+
+        <footer class="inv-actions">
+          <button id="sellAllBtn" class="big-btn" type="button">💰 ПРОДАТЬ ВСЁ</button>
+          <output class="hint" id="sellAllHint" aria-live="polite"></output>
+        </footer>
+      </article>
+    </section>
+
+    <!-- ==================== РЕКОРДЫ ==================== -->
+    <section class="panel" id="panel-records" aria-labelledby="records-title" hidden>
+      <article class="card">
+        <h2 id="records-title">🏆 Рекорды</h2>
+        <dl class="records" id="records"></dl>
+        <button id="resetRecordsBtn" class="small-btn" type="button">🗑️ Сбросить всё</button>
+      </article>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+    </main>
+    
